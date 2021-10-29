@@ -17,10 +17,23 @@
         //Extraer Datos de la tabla
 
         //Query para estraer datos
-        $consulta = "Select * from productos";
+        $consulta = "Select * from Ventas Order By Referencia desc";
+
+        //Queries para llenar los comboBox
+        $llenaVendedor = "Select Vendedor from vendedores";
+        $llenaTipo = "Select tipopropiedad from tipo";
+        $llenaProvincia = "Select provincia from provincia";
+        $llenaOperacion = "Select operacion from operacion";
 
         //Variable contenedora de datos
         $resultado = mysqli_query($conn, $consulta);
+
+        //Ejecutar Queries
+        $llenaTipo1 = mysqli_query($conn, $llenaTipo);
+        $llenaOperacion1 = mysqli_query($conn, $llenaOperacion);
+        $llenaProvincia1 = mysqli_query($conn, $llenaProvincia);
+        $llenaVendedor1 = mysqli_query($conn, $llenaVendedor);
+
     ?>
 
     <!--Proceso de extracción de datos-->
@@ -45,18 +58,18 @@
             <?php
                 //ciclo para extraer el registro del paquete
                 while($dato = mysqli_fetch_assoc($resultado)){
-                    echo '<tr> <th scope="row">'.$dato['referencia'].'</th>';
-                    echo '<td>'.$dato['fechaalta'].'</td>';
-                    echo '<td>'.$dato['fechaventa'].'</td>';
-                    echo '<td>'.$dato['tipo'].'</td>';
-                    echo '<td>'.$dato['operacion'].'</td>';
-                    echo '<td>'.$dato['porvicia'].'</td>';
-                    echo '<td>'.$dato['superficie'].'</td>';
-                    echo '<td>'.$dato['precioventa'].'</td>';
-                    echo '<td>'.$dato['vendedor'].'</td>';
-                    echo '<td>'.$dato['comision'].'</td>';
-                    echo '<td><a href="actualizar.php?id='.$dato['referencia'].'" class="btn btn-warning">Actualizar</a></td>';
-                    echo '<td><a href="eliminar.php?id='.$dato['referencia'].'" class="btn btn-danger">Eliminar</a></td></tr>';
+                    echo '<tr> <th scope="row">'.$dato['Referencia'].'</th>';
+                    echo '<td>'.$dato['FechaAlta'].'</td>';
+                    echo '<td>'.$dato['FechaVenta'].'</td>';
+                    echo '<td>'.$dato['Tipo'].'</td>';
+                    echo '<td>'.$dato['Operacion'].'</td>';
+                    echo '<td>'.$dato['Provincia'].'</td>';
+                    echo '<td>'.$dato['Superficie'].'</td>';
+                    echo '<td>'.$dato['PrecioVenta'].'</td>';
+                    echo '<td>'.$dato['Vendedor'].'</td>';
+                    echo '<td>'.$dato['Comision'].'</td>';
+                    echo '<td><a href="actualizar.php?id='.$dato['Referencia'].'" class="btn btn-warning">Actualizar</a></td>';
+                    echo '<td><a href="eliminar.php?id='.$dato['Referencia'].'" class="btn btn-danger">Eliminar</a></td></tr>';
                 } 
             ?>
         </tbody>
@@ -65,18 +78,66 @@
     <br/>
 
     <form method="post">
-        <h2>Formulario para el Registro de Datos</h2>
+        <h2>Formulario para el Registro de Nuevos Datos</h2>
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="nombre" placeholder="Escriba su Nombre" name="nombre">
-            <label for="nombre">Escriba su Nombre</label>
+            <input type="date" class="form-control" id="FechaAlta" name="FechaAlta">
+            <label for="nombre">Fecha de Alta</label>
         </div>
         <div class="form-floating mb-3">
-            <input type="tel" class="form-control" id="telefono" placeholder="No de Telefono" name="telefono">
-            <label for="Telefono">No de Telefono</label>
+            <input type="date" class="form-control" id="FechaVenta" name="FechaVenta">
+            <label for="nombre">Fecha de la Venta</label>
         </div>
         <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="email" placeholder="name@example.com" name="correo">
-            <label for="email">name@example.com</label>
+            <!--Remplazar por un comboBox-->
+            <select class="form-select" name="Tipo">
+                <option selected>Seleccione un Tipo de Propiedad</option>
+                <?php
+                //ciclo para extraer el registro del paquete
+                while($dato1 = mysqli_fetch_assoc($llenaTipo1)){
+                    echo '<option value='.$dato1['tipopropiedad'].'>'.$dato1['tipopropiedad'].'</option>';
+                }?>
+            </select>
+        </div>
+        <div class="form-floating mb-3">
+            <!--Remplazar por un comboBox-->
+            <select class="form-select" name="Operacion">
+                <option selected>Seleccione un Tipo de Operacion</option>
+                <?php
+                //ciclo para extraer el registro del paquete
+                while($dato2 = mysqli_fetch_assoc($llenaOperacion1)){
+                    echo '<option value='.$dato2['operacion'].'>'.$dato2['operacion'].'</option>';
+                }?>
+            </select>
+        </div>
+        <div class="form-floating mb-3">
+            <!--Remplazar por un comboBox-->
+            <select class="form-select" name="Provincia">
+                <option selected>Seleccione Provincia</option>
+                <?php
+                //ciclo para extraer el registro del paquete
+                while($dato3 = mysqli_fetch_assoc($llenaProvincia1)){
+                    echo '<option value='.$dato3['provincia'].'>'.$dato3['provincia'].'</option>';
+                }?>
+            </select>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="Superficie" placeholder="Mtros Cuadrados" name="Superficie">
+            <label for="Superficie">Superficie en M2</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="PrecioVenta" placeholder="Precio de la Propiedad" name="PrecioVenta">
+            <label for="Superficie">Precio de la Propiedad</label>
+        </div>
+        <div class="form-floating mb-3">
+            <!--Remplazar por un comboBox-->
+            <select class="form-select" name="Vendedor">
+                <option selected>Vendedor</option>
+                <?php
+                //ciclo para extraer el registro del paquete
+                while($dato4 = mysqli_fetch_assoc($llenaVendedor1)){
+                    echo '<option value='.$dato4['Vendedor'].'>'.$dato4['Vendedor'].'</option>';
+                }?>
+            </select>
         </div>
         <div>
             <input class="btn btn-primary" type="submit" value="Guardar Datos" name="boton"/>
@@ -85,10 +146,17 @@
 
     <?php
         if($_POST){
-            $nombre = $_POST['nombre'];
-            $telefono = $_POST['telefono'];
-            $correo = $_POST['correo'];
-            $insertar = "Insert Into personas (nombre, tel, mail) Values ('$nombre', '$telefono', '$correo')";
+            $FechaAlta = $_POST['FechaAlta'];
+            $FechaVenta = $_POST['FechaVenta'];
+            $Tipo = $_POST['Tipo'];
+            $Operacion = $_POST['Operacion'];
+            $Provincia = $_POST['Provincia'];
+            $Superficie = $_POST['Superficie'];
+            $PrecioVenta = $_POST['PrecioVenta'];
+            $Vendedor = $_POST['Vendedor'];
+            $Comision = $PrecioVenta * 0.05;
+
+            $insertar = "Insert Into Ventas (FechaAlta, FechaVenta, Tipo, Operacion, Provincia, Superficie, PrecioVenta, Vendedor, Comision) Values ('$FechaAlta', '$FechaVenta', '$Tipo', '$Operacion', '$Provincia', '$Superficie', '$PrecioVenta', '$Vendedor', '$Comision')";
             mysqli_query($conn, $insertar);
             mysqli_close($conn);
         }
