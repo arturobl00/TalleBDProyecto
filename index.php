@@ -77,7 +77,7 @@
     
     <br/>
 
-    <form method="post">
+    <form method="POST">
         <h2>Formulario para el Registro de Nuevos Datos</h2>
         <div class="form-floating mb-3">
             <input type="date" class="form-control" id="FechaAlta" name="FechaAlta">
@@ -146,20 +146,25 @@
 
     <?php
         if($_POST){
-            $FechaAlta = $_POST['FechaAlta'];
-            $FechaVenta = $_POST['FechaVenta'];
-            $Tipo = $_POST['Tipo'];
-            $Operacion = $_POST['Operacion'];
-            $Provincia = $_POST['Provincia'];
-            $Superficie = $_POST['Superficie'];
-            $PrecioVenta = $_POST['PrecioVenta'];
-            $Vendedor = $_POST['Vendedor'];
-            $Comision = $PrecioVenta * 0.05;
-
-            $insertar = "Insert Into Ventas (FechaAlta, FechaVenta, Tipo, Operacion, Provincia, Superficie, PrecioVenta, Vendedor, Comision) Values ('$FechaAlta', '$FechaVenta', '$Tipo', '$Operacion', '$Provincia', '$Superficie', '$PrecioVenta', '$Vendedor', '$Comision')";
-            mysqli_query($conn, $insertar);
-            mysqli_close($conn);
+            $boton = $_POST['boton'];
+            if($boton == 'Guardar Datos'){
+                $FechaAlta = $_POST['FechaAlta'];
+                $FechaVenta = $_POST['FechaVenta'];
+                $Tipo = $_POST['Tipo'];
+                $Operacion = $_POST['Operacion'];
+                $Provincia = $_POST['Provincia'];
+                $Superficie = $_POST['Superficie'];
+                $PrecioVenta = $_POST['PrecioVenta'];
+                $Vendedor = $_POST['Vendedor'];
+                $Comision = $PrecioVenta * 0.05;
+                $insertar = "Insert Into Ventas (FechaAlta, FechaVenta, Tipo, Operacion, Provincia, Superficie, PrecioVenta, Vendedor, Comision) Values ('$FechaAlta', '$FechaVenta', '$Tipo', '$Operacion', '$Provincia', '$Superficie', '$PrecioVenta', '$Vendedor', '$Comision')";
+                mysqli_query($conn, $insertar);
+                mysqli_close($conn);
+                $boton = "";
+            }
         }
     ?>
+
+
 </body>
 </html>
