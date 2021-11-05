@@ -17,31 +17,85 @@
         include 'conexion.php';
 
         //Consultando el registro en mi bd
-        $consulta = "Select * from personas where id = ".$id;
+        $consulta = "Select * from ventas where Referencia = ".$id;
+
+        //Queries para llenar los comboBox
+        $llenaVendedor = "Select Vendedor from vendedores";
+        $llenaTipo = "Select tipopropiedad from tipo";
+        $llenaProvincia = "Select provincia from provincia";
+        $llenaOperacion = "Select operacion from operacion";
 
         //Ejecutar el Query
         $resultado = mysqli_query($conn, $consulta); 
+
+        $llenaTipo1 = mysqli_query($conn, $llenaTipo);
+        $llenaOperacion1 = mysqli_query($conn, $llenaOperacion);
+        $llenaProvincia1 = mysqli_query($conn, $llenaProvincia);
+        $llenaVendedor1 = mysqli_query($conn, $llenaVendedor);
     ?>
 
     <h1>Mi Primer Proyecto CRUD</h1>    
     <h2>Editar datos de la Base</h2>
     
     <form method="post">
-        <h2>Formulario para la Edición de Datos</h2>
+        <h2>Formulario para la Edición de Registros</h2>
         <?php
             while($dato = mysqli_fetch_assoc($resultado)){
-            //echo $dato['nombre'], $dato['tel'], $dato['mail'];
-            echo '<div class="form-floating mb-3">';
-            echo '<input type="text" class="form-control" id="nombre" placeholder="Escriba su Nombre" name="nombre" value="'.$dato['nombre'].'">';
-            echo '<label for="nombre">Escriba su Nombre</label></div>';
-            
-            echo '<div class="form-floating mb-3">';
-            echo '<input type="tel" class="form-control" id="telefono" placeholder="No de Telefono" name="telefono" value="'.$dato['tel'].'">';
-            echo '<label for="Telefono">No de Telefono</label></div>';
-            
-            echo '<div class="form-floating mb-3">';
-            echo '<input type="email" class="form-control" id="email" placeholder="name@example.com" name="correo" value="'.$dato['mail'].'">';
-            echo '<label for="email">name@example.com</label></div>';
+                echo '<div class="form-floating mb-3">';
+                echo '<input type="text" class="form-control" id="FechaAlta" name="FechaAlta" value="'.$dato['FechaAlta'].'">';
+                echo '<label>Fecha de Alta</label></div>';
+    
+                echo '<div class="form-floating mb-3">';
+                echo '<input type="text" class="form-control" id="FechaVenta" name="FechaVenta" value="'.$dato['FechaVenta'].'">';
+                echo '<label>Fecha de Venta</label></div>';
+    
+                echo '<div class="form-floating mb-3">';
+                echo '<select class="form-select" name="Tipo">';
+                echo '<option selected>'.$dato['Tipo'].'</option>';
+                while($dato1 = mysqli_fetch_assoc($llenaTipo1)){
+                    echo '<option value='.$dato1['tipopropiedad'].'>'.$dato1['tipopropiedad'].'</option>';
+                }
+                echo '</select>';
+                echo '</div>';
+
+                echo '<div class="form-floating mb-3">';
+                echo '<select class="form-select" name="Operacion">';
+                echo '<option selected>'.$dato['Operacion'].'</option>';
+                while($dato2 = mysqli_fetch_assoc($llenaOperacion1)){
+                    echo '<option value='.$dato2['operacion'].'>'.$dato2['operacion'].'</option>';
+                }
+                echo '</select>';
+                echo '</div>';
+                
+                echo '<div class="form-floating mb-3">';
+                echo '<select class="form-select" name="Provincia">';
+                echo '<option selected>'.$dato['Provincia'].'</option>';
+                while($dato3 = mysqli_fetch_assoc($llenaProvincia1)){
+                    echo '<option value='.$dato3['provincia'].'>'.$dato3['provincia'].'</option>';
+                }
+                echo '</select>';
+                echo '</div>';
+                    
+                echo '<div class="form-floating mb-3">';
+                echo '<input type="text" class="form-control" id="Superficie" name="Superficie"value="'.$dato['Superficie'].'">';
+                echo '<label>Superficie en M2</label></div>';
+    
+                echo '<div class="form-floating mb-3">';
+                echo '<input type="text" class="form-control" id="PrecioVenta" name="PrecioVenta" value="'.$dato['PrecioVenta'].'">';
+                echo '<label>Precio de Venta</label></div>';
+    
+                echo '<div class="form-floating mb-3">';
+                echo '<select class="form-select" name="Vendedor">';
+                echo '<option selected>'.$dato['Vendedor'].'</option>';
+                while($dato4 = mysqli_fetch_assoc($llenaVendedor1)){
+                    echo '<option value='.$dato4['Vendedor'].'>'.$dato4['Vendedor'].'</option>';
+                }
+                echo '</select>';
+                echo '</div>';
+
+                echo '<div class="form-floating mb-3">';
+                echo '<input type="text" class="form-control" disabled value="'.$dato['Comision'].'">';
+                echo '<label>Comision Otorgada</label></div>';
             }
         ?>
         <div>
@@ -50,14 +104,20 @@
     </form>
 
     <?php
-        if($_POST){
-            $nombre = $_POST['nombre'];
-            $telefono = $_POST['telefono'];
-            $correo = $_POST['correo'];
-            $actualizar = "Update personas set nombre = '$nombre', tel = '$telefono', mail = '$correo' where id = '$id'";
-            //UPDATE `personas` SET `nombre` = 'Jan Marco1' WHERE `personas`.`id` = 116;
+        if(isset($_POST['boton'])){
+            $FechaAlta = $_POST['FechaAlta'];
+            $FechaVenta = $_POST['FechaVenta'];
+            $Tipo = $_POST['Tipo'];
+            $Operacion = $_POST['Operacion'];
+            $Provincia = $_POST['Provincia'];
+            $Superficie = $_POST['Superficie'];
+            $PrecioVenta = $_POST['PrecioVenta'];
+            $Vendedor = $_POST['Vendedor'];
+            $Comision = $PrecioVenta * 0.05;
+            $actualizar = "Update ventas set FechaAlta = '$FechaAlta', FechaVenta = '$FechaVenta', Tipo = '$Tipo', Operacion = '$Operacion', Provincia='$Provincia', Superficie = '$Superficie', PrecioVenta = '$PrecioVenta', Vendedor = '$Vendedor', Comision = '$Comision'  where Referencia = '$id'";
             mysqli_query($conn, $actualizar);
             mysqli_close($conn);
+            echo "<script language='javascript'>window.location='index.php'</script>";
         }
     ?>
 </body>

@@ -73,10 +73,11 @@
     </form>
 
     <?php
-        if($_POST){
+        if(isset($_POST['boton'])){
             $eliminar = "Delete from ventas where Referencia = '$id'";
             mysqli_query($conn, $eliminar);
             mysqli_close($conn);
+            echo "<script language='javascript'>window.location='index.php'</script>";
         }
     ?>
 </body>

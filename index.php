@@ -145,23 +145,20 @@
     </form>
 
     <?php
-        if($_POST){
-            $boton = $_POST['boton'];
-            if($boton == 'Guardar Datos'){
-                $FechaAlta = $_POST['FechaAlta'];
-                $FechaVenta = $_POST['FechaVenta'];
-                $Tipo = $_POST['Tipo'];
-                $Operacion = $_POST['Operacion'];
-                $Provincia = $_POST['Provincia'];
-                $Superficie = $_POST['Superficie'];
-                $PrecioVenta = $_POST['PrecioVenta'];
-                $Vendedor = $_POST['Vendedor'];
-                $Comision = $PrecioVenta * 0.05;
-                $insertar = "Insert Into Ventas (FechaAlta, FechaVenta, Tipo, Operacion, Provincia, Superficie, PrecioVenta, Vendedor, Comision) Values ('$FechaAlta', '$FechaVenta', '$Tipo', '$Operacion', '$Provincia', '$Superficie', '$PrecioVenta', '$Vendedor', '$Comision')";
-                mysqli_query($conn, $insertar);
-                mysqli_close($conn);
-                $boton = "";
-            }
+        if(isset($_POST['boton'])){
+            $FechaAlta = $_POST['FechaAlta'];
+            $FechaVenta = $_POST['FechaVenta'];
+            $Tipo = $_POST['Tipo'];
+            $Operacion = $_POST['Operacion'];
+            $Provincia = $_POST['Provincia'];
+            $Superficie = $_POST['Superficie'];
+            $PrecioVenta = $_POST['PrecioVenta'];
+            $Vendedor = $_POST['Vendedor'];
+            $Comision = $PrecioVenta * 0.05;
+            $insertar = "Insert Into Ventas (FechaAlta, FechaVenta, Tipo, Operacion, Provincia, Superficie, PrecioVenta, Vendedor, Comision) Values ('$FechaAlta', '$FechaVenta', '$Tipo', '$Operacion', '$Provincia', '$Superficie', '$PrecioVenta', '$Vendedor', '$Comision')";
+            mysqli_query($conn, $insertar);
+            mysqli_close($conn);
+            echo "<script language='javascript'>window.location='index.php'</script>";
         }
     ?>
 
